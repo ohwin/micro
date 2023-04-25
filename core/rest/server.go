@@ -14,9 +14,7 @@ type Server struct {
 
 type RouterFunc func(engine *gin.Engine)
 
-var routers []RouterFunc
-
-func New() *Server {
+func New(routers ...RouterFunc) *Server {
 	initialize.Init()
 	env := gin.DebugMode
 	if config.App.Env == gin.ReleaseMode {
@@ -31,10 +29,6 @@ func New() *Server {
 		Ctx:    context.Background(),
 		Engine: engine,
 	}
-}
-
-func Routers(r ...RouterFunc) {
-	routers = append(routers, r...)
 }
 
 func (s *Server) Run() {
