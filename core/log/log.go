@@ -67,18 +67,18 @@ func callerEncoder(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder
 }
 
 func Debug(a ...any) {
-	write(zap.DebugLevel, a)
+	write(zap.DebugLevel, a...)
 }
 
 func Error(a ...any) {
-	write(zap.ErrorLevel, a)
+	write(zap.ErrorLevel, a...)
 }
 
 func Info(a ...any) {
-	write(zap.InfoLevel, a)
+	write(zap.InfoLevel, a...)
 }
 func Warn(a ...any) {
-	write(zap.WarnLevel, a)
+	write(zap.WarnLevel, a...)
 }
 
 func Debugf(format string, a ...any) {
