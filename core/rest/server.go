@@ -12,6 +12,10 @@ type Server struct {
 	Engine *gin.Engine
 }
 
+type RouterFunc func(engine *gin.Engine)
+
+var Routers []RouterFunc
+
 func New() *Server {
 	initialize.Init()
 	gin.SetMode(config.App.Env)
