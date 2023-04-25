@@ -14,31 +14,30 @@ type Server struct {
 
 type RouterFunc func(engine *gin.Engine)
 
-var Routers []RouterFunc
+var routers []RouterFunc
 
 func New() *Server {
 	initialize.Init()
-	gin.SetMode(config.App.Env)
-
+	env := gin.DebugMode
+	if config.App.Env == gin.ReleaseMode {
+		env = gin.ReleaseMode
+	}
+	gin.SetMode(env)
+	engine := gin.Default()
+	for _, router := range routers {
+		router(engine)
+	}
 	return &Server{
 		Ctx:    context.Background(),
-		Engine: gin.Default(),
+		Engine: engine,
 	}
 }
 
-func (s *Server) AddRouters(routers ...func(r *gin.Engine)) *Server {
-	for _, f := range routers {
-		f(s.Engine)
-	}
-	return s
+func Routers(r ...RouterFunc) {
+	routers = append(routers, r...)
 }
 
 func (s *Server) Run() {
-
-	////router.InitRouter(s.Engine)
-	//s.Engine.GET("/ss", func(c *gin.Context) {
-	//	c.JSON(200, "sd")
-	//})
 	err := s.Engine.Run(config.Addr())
 	if err != nil {
 		panic(err)
